@@ -1,5 +1,5 @@
 import exp from "express";
-import { register } from "../services/authService.js";
+import { register } from "../../services/authService.js";
 import { ArticleModel } from "../models/ArticleModel.js";
 import { checkAuthor } from "../middlewares/checkAuthor.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -11,44 +11,44 @@ export const authorRoute = exp.Router();
 
 //Register author(public)
 authorRoute.post(
-        "/users",
-        upload.single("profileImageURL"),
-        async (req, res, next) => {
-        let cloudinaryResult;
+  "/users",
+  upload.single("profileImageURL"),
+  async (req, res, next) => {
+    let cloudinaryResult;
 
-            try {
-                let userObj = req.body;
-                delete userObj.profileImageURL;
+    try {
+      let userObj = req.body;
+      delete userObj.profileImageURL;
 
-                //  Step 1: upload image to cloudinary from memoryStorage (if exists)
-                if (req.file) {
-                cloudinaryResult = await uploadToCloudinary(req.file.buffer);
-                }
+      //  Step 1: upload image to cloudinary from memoryStorage (if exists)
+      if (req.file) {
+        cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+      }
 
-                // Step 2: call existing register()
-                const newUserObj = await register({
-                ...userObj,
-                role: "AUTHOR",
-                profileImageUrl: cloudinaryResult?.secure_url,
-                });
+      // Step 2: call existing register()
+      const newUserObj = await register({
+        ...userObj,
+        role: "AUTHOR",
+        profileImageUrl: cloudinaryResult?.secure_url,
+      });
 
-                res.status(201).json({
-                message: "user created",
-                payload: newUserObj,
-                });
+      res.status(201).json({
+        message: "user created",
+        payload: newUserObj,
+      });
 
-            } catch (err) {
+    } catch (err) {
 
-                // Step 3: rollback 
-                if (cloudinaryResult?.public_id) {
-                await cloudinary.uploader.destroy(cloudinaryResult.public_id);
-                }
+      // Step 3: rollback 
+      if (cloudinaryResult?.public_id) {
+        await cloudinary.uploader.destroy(cloudinaryResult.public_id);
+      }
 
-                next(err); // send to your error middleware
-            }
+      next(err); // send to your error middleware
+    }
 
-        }
-        );
+  }
+);
 
 //Create article(protected route)
 authorRoute.post("/articles", verifyToken("AUTHOR"), async (req, res) => {
@@ -111,11 +111,11 @@ authorRoute.patch("/articles/:id/status", verifyToken("AUTHOR"), async (req, res
 
   //console.log(req.user.userId,article.author.toString())
   // AUTHOR can only modify their own articles
-  if (req.user.role === "AUTHOR" && 
+  if (req.user.role === "AUTHOR" &&
     article.author.toString() !== req.user.userId) {
     return res
-    .status(403)
-    .json({ message: "Forbidden. You can only modify your own articles" });
+      .status(403)
+      .json({ message: "Forbidden. You can only modify your own articles" });
   }
   // Already in requested state
   if (article.isArticleActive === isArticleActive) {
@@ -137,16 +137,16 @@ authorRoute.patch("/articles/:id/status", verifyToken("AUTHOR"), async (req, res
 
 // Reply to comment
 authorRoute.post('/articles/:articleId/comments/:commentId/reply', verifyToken("AUTHOR"), async (req, res) => {
-    const { articleId, commentId } = req.params;
-    const { reply } = req.body;
-    try {
-        const article = await ArticleModel.findOneAndUpdate(
-            { _id: articleId, author: req.user.userId, "comments._id": commentId },
-            { $set: { "comments.$.authorReply": reply } },
-            { new: true }
-        ).populate("author", "firstName email").populate("comments.user", "firstName email");
-        
-        if (!article) return res.status(403).json({ message: "Not authorized or comment not found" });
-        res.status(200).json({ message: "Reply added", payload: article });
-    } catch (err) { res.status(500).json({ message: err.message }); }
+  const { articleId, commentId } = req.params;
+  const { reply } = req.body;
+  try {
+    const article = await ArticleModel.findOneAndUpdate(
+      { _id: articleId, author: req.user.userId, "comments._id": commentId },
+      { $set: { "comments.$.authorReply": reply } },
+      { new: true }
+    ).populate("author", "firstName email").populate("comments.user", "firstName email");
+
+    if (!article) return res.status(403).json({ message: "Not authorized or comment not found" });
+    res.status(200).json({ message: "Reply added", payload: article });
+  } catch (err) { res.status(500).json({ message: err.message }); }
 });
