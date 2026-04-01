@@ -1,5 +1,5 @@
 import exp from "express";
-import { authenticate, register } from "../services/authService.js";
+import { authenticate, register } from "../../services/authService.js";
 import { UserTypeModel } from "../models/UserModel.js";
 import { ArticleModel } from "../models/ArticleModel.js";
 import { checkAuthor } from "../middlewares/checkAuthor.js";
