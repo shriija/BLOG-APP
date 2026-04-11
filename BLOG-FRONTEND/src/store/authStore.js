@@ -6,6 +6,7 @@ export const useAuth = create((set)=>({
     isAuthenticated : false,
     loading: true,
     error : null,
+    updateUser: (updatedUser) => set({ currentUser: updatedUser }),
     login:async(userCredWithRole)=>{
         const {role,...userCredObj} = userCredWithRole
         try{

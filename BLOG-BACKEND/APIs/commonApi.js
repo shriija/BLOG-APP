@@ -4,6 +4,9 @@ import { UserTypeModel } from "../models/UserModel.js";
 import { ArticleModel } from "../models/ArticleModel.js";
 import bcrypt from "bcryptjs";
 import {verifyToken} from "../middlewares/verifyToken.js"
+import { upload } from "../config/multer.js";
+import { uploadToCloudinary } from "../config/cloudinaryUpload.js";
+import cloudinary from "../config/cloudinary.js";
 export const commonRouter = exp.Router();
 
 //login
@@ -86,5 +89,34 @@ commonRouter.get("/article/:articleId", verifyToken("USER", "AUTHOR", "ADMIN"), 
     res.status(200).json({ payload: article });
   } catch(err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+//Edit profile
+commonRouter.put("/profile", verifyToken("USER", "AUTHOR", "ADMIN"), upload.single("profileImageURL"), async (req, res, next) => {
+  let cloudinaryResult;
+  try {
+    const { firstName, lastName } = req.body;
+    let updateData = { firstName, lastName };
+
+    if (req.file) {
+      cloudinaryResult = await uploadToCloudinary(req.file.buffer);
+      updateData.profileImageUrl = cloudinaryResult?.secure_url;
+    }
+
+    const user = await UserTypeModel.findByIdAndUpdate(
+      req.user.userId,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    
+    res.status(200).json({ message: "Profile updated", payload: user });
+  } catch (err) {
+    if (cloudinaryResult?.public_id) {
+      await cloudinary.uploader.destroy(cloudinaryResult.public_id);
+    }
+    next(err);
   }
 });

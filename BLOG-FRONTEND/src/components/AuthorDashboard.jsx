@@ -86,10 +86,18 @@ function AuthorDashboard() {
           />
           <div>
             <h2 className="text-xl font-semibold tracking-tight text-[#1d1d1f]">
-              Welcome back, {currentUser.firstName}
+              Welcome back, Author {currentUser.firstName}
             </h2>
-            <p className="text-[#6e6e73] text-sm mt-0.5">
-              Manage your published articles and drafts
+            <div className="flex gap-2 mt-1.5">
+              <button 
+                onClick={() => navigate('/edit-profile')} 
+                className="text-[0.65rem] font-bold text-[#0066cc] uppercase tracking-widest hover:opacity-80 transition-opacity bg-blue-50 px-3 py-1 rounded-full border border-blue-200"
+              >
+                Edit Profile
+              </button>
+            </div>
+            <p className="text-[#6e6e73] text-sm mt-1.5">
+              Manage your technical articles
             </p>
           </div>
         </div>

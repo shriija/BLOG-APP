@@ -15,7 +15,9 @@ import EditArticle from './components/EditArticleForm'
 import WriteArticle from "./components/WriteArticle"
 import ProtectedRoute from "./components/ProtectedRoute";
 import ErrorBoundary from './components/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary';
 import Unauthorized from './components/Unauthorized'
+import EditProfileForm from './components/EditProfileForm'
 
 function App() {
   const checkAuth = useAuth(state => state.checkAuth)
@@ -91,6 +93,13 @@ function App() {
         {
           path:"/unauthorized",
           element:<Unauthorized/>
+        },
+        {
+          path:"edit-profile",
+          element:
+          <ProtectedRoute allowedRoles={["USER", "AUTHOR", "ADMIN"]}>
+            <EditProfileForm/>
+          </ProtectedRoute>
         }
       ]
     },
