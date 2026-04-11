@@ -1,5 +1,5 @@
 import exp from 'express'
-import {register, authenticate} from '../services/authService.js'
+import {register, authenticate} from '../../services/authService.js'
 import { UserTypeModel } from '../models/UserModel.js'
 //import { use } from 'react'
 export const userRoute = exp.Router()
