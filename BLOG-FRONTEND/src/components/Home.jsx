@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import {
   pageWrapper,
   pageBackground,
@@ -61,8 +62,8 @@ function Home() {
           Join thousands of developers learning and growing together.
         </p>
         <div className="flex gap-4 flex-wrap">
-          <a href="/register" className={primaryBtn}>Start Reading</a>
-          <a href="/login" className={secondaryBtn}>Have Account?</a>
+          <Link to="/register" className={primaryBtn}>Start Reading</Link>
+          <Link to="/Login" className={secondaryBtn}>Have Account?</Link>
         </div>
       </section>
 
