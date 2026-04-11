@@ -101,23 +101,28 @@ function Register() {
           <input type="radio" value="user" {...register("role", { required: true })} /> User
           <input type="radio" className="ml-3" value="author" {...register("role", { required: true })} /> Author
 
-          {errors.role && <p className="text-red-500">Role required</p>}
+          {errors.role && <p className={errorClass}>Role required</p>}
         </div>
 
         <div className={formGroup}>
           <input type="text" placeholder="First name" {...register("firstName", { required: true })} className={inputClass} />
+          {errors.firstName && <p className={errorClass}>First name is required</p>}
         </div>
 
         <div className={formGroup}>
           <input type="text" placeholder="Last name" {...register("lastName", { required: true })} className={inputClass} />
+          {errors.lastName && <p className={errorClass}>Last name is required</p>}
         </div>
 
         <div className={formGroup}>
           <input type="email" placeholder="Email" {...register("email", { required: true })} className={inputClass} />
+          {errors.email && <p className={errorClass}>Email is required</p>}
         </div>
 
         <div className={formGroup}>
           <input type="password" placeholder="Password" {...register("password", { required: true, minLength: 6 })} className={inputClass} />
+          {errors.password?.type === "required" && <p className={errorClass}>Password is required</p>}
+          {errors.password?.type === "minLength" && <p className={errorClass}>Password must be at least 6 characters</p>}
         </div>
 
         <input
