@@ -15,12 +15,13 @@ commonRouter.post("/login", async (req, res) => {
   let userCred = req.body;
   //call authenticate service
   let { token, user } = await authenticate(userCred);
-  const isProduction = process.env.NODE_ENV === "production";
+  const origin = req.headers.origin || "";
+  const isLocal = origin.includes("localhost");
   
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: isProduction ? "none" : "lax",
-    secure: isProduction,
+    sameSite: isLocal ? "lax" : "none",
+    secure: !isLocal,
   });
   //send res
   res.status(200).json({ message: "login success", payload: user });
@@ -28,12 +29,13 @@ commonRouter.post("/login", async (req, res) => {
 
 //logout for User, Author and Admin
 commonRouter.get("/logout", (req, res) => {
-  const isProduction = process.env.NODE_ENV === "production";
+  const origin = req.headers.origin || "";
+  const isLocal = origin.includes("localhost");
   // Clear the cookie named 'token'
   res.clearCookie("token", {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
+    secure: !isLocal,
+    sameSite: isLocal ? "lax" : "none",
   });
 
   res.status(200).json({ message: "Logged out successfully" });
