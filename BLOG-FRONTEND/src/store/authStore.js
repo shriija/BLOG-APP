@@ -15,6 +15,8 @@ export const useAuth = create((set)=>({
             //make api call
             let res = await axios.post("/common-api/login",userCredObj,{withCredentials:true})
             console.log("res is", res)
+            //save token manually for cookie-blocked browsers
+            if (res.data.token) localStorage.setItem("token", res.data.token);
             //update state
             set({loading:false,isAuthenticated:true,currentUser:res.data.payload})
         }catch(err){
@@ -33,6 +35,7 @@ export const useAuth = create((set)=>({
         try{
             set({loading:true, error:null})
             let res = await axios.get("/common-api/logout",{withCredentials:true})
+            localStorage.removeItem("token");
             set({loading:false,isAuthenticated:false,currentUser:null})
         }catch(err){
             console.log("error is", err)
@@ -59,6 +62,7 @@ export const useAuth = create((set)=>({
     } catch (err) {
       // If user is not logged in → do nothing
       if (err.response?.status === 401) {
+        localStorage.removeItem("token");
         set({
           currentUser: null,
           isAuthenticated: false,

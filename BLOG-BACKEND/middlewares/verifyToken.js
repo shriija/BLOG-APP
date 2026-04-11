@@ -5,8 +5,12 @@ config();
 export const verifyToken = (...allowedRoles) => {
   return async (req, res, next) => {
     try {
-      // Read token from cookie
-      const token = req.cookies.token;
+      // Read token from cookie OR authorization header
+      let token = req.cookies.token;
+      if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+        token = req.headers.authorization.split(" ")[1];
+      }
+
       if (!token) {
         return res.status(401).json({ message: "Unauthorized. Please login" });
       }

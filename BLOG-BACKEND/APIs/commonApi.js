@@ -24,7 +24,7 @@ commonRouter.post("/login", async (req, res) => {
     secure: !isLocal,
   });
   //send res
-  res.status(200).json({ message: "login success", payload: user });
+  res.status(200).json({ message: "login success", payload: user, token: token });
 });
 
 //logout for User, Author and Admin
