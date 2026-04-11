@@ -13,7 +13,9 @@ config(); //process.env
 //Create express application
 const app = exp();
 //use cors middleware
-app.use(cors({ origin: true , credentials:true})); //credentials allow browser to recieve the token
+app.use(cors({
+  origin: "https://blog-app-gules-eight.vercel.app", credentials: true
+})); //credentials allow browser to recieve the token
 //add body parser middleware
 app.use(exp.json());
 //add cookie parser middleware
@@ -32,7 +34,7 @@ const connectDB = async () => {
     console.log("DB connection success");
 
     //start http server
-    app.listen(process.env.PORT, () => console.log(`server started on port ${process.env.PORT}`));
+    app.listen(process.env.PORT || 5000, () => console.log(`server started on port ${process.env.PORT || 5000}`));
   } catch (err) {
     console.log("Err in DB connection", err);
   }

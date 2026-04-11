@@ -1,5 +1,5 @@
 import exp from "express";
-import { authenticate, register } from "../Services/authService.js";
+import { authenticate, register } from "../services/authService.js";
 import { ArticleModel } from "../models/ArticleModel.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 import { upload } from "../config/multer.js";
