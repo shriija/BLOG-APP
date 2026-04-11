@@ -27,7 +27,7 @@ function AuthorDashboard() {
 
   const getArticles = async () => {
     try {
-      let res = await axios.get(`https://blog-app-gkta.onrender.com/author-api/articles/${currentUser?.userId || currentUser?._id}`, { withCredentials: true })
+      let res = await axios.get(`/author-api/articles/${currentUser?.userId || currentUser?._id}`, { withCredentials: true })
       setArticles(res.data.payload)
     } catch (err) {
       console.log(err)
@@ -40,7 +40,7 @@ function AuthorDashboard() {
     if (!window.confirm(`Are you sure you want to ${actionText} this article?`)) return;
     try {
       await axios.patch(
-        `https://blog-app-gkta.onrender.com/author-api/articles/${articleId}/status`,
+        `/author-api/articles/${articleId}/status`,
         { isArticleActive: !currentStatus },
         { withCredentials: true }
       );

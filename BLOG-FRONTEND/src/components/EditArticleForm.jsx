@@ -44,7 +44,7 @@ function EditArticle() {
     try {
 
       await axios.put(
-        `https://blog-app-gkta.onrender.com/author-api/articles`,
+        `/author-api/articles`,
         { ...data, articleId: id, author: currentUser?.userId || currentUser?._id },
         { withCredentials: true }
       )
@@ -61,7 +61,7 @@ function EditArticle() {
   const getArticleById = async () => {
     try {
       let res = await axios.get(
-        `https://blog-app-gkta.onrender.com/author-api/article/${id}`
+        `/author-api/article/${id}`
       )
       setArticleData(res.data.payload)
     } catch (err) {

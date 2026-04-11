@@ -13,8 +13,16 @@ config(); //process.env
 //Create express application
 const app = exp();
 //use cors middleware
+const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173", "http://localhost:5174"];
 app.use(cors({
-  origin: "https://blog-app-gules-eight.vercel.app", credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }, 
+  credentials: true
 })); //credentials allow browser to recieve the token
 //add body parser middleware
 app.use(exp.json());

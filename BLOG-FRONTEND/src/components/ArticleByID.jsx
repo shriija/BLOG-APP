@@ -29,7 +29,7 @@ function ArticleByID() {
   const getArticleById = async () => {
     try {
       let res = await axios.get(
-        `https://blog-app-gkta.onrender.com/common-api/article/${articleId}`,
+        `/common-api/article/${articleId}`,
         { withCredentials: true }
       )
       setArticle(res.data.payload)
@@ -44,7 +44,7 @@ function ArticleByID() {
 
     try {
       let res = await axios.post(
-        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}`,
+        `/user-api/articles/${articleId}`,
         { user: user?.userId || user?._id, articleId, comment: commentText },
         { withCredentials: true }
       );
@@ -60,7 +60,7 @@ function ArticleByID() {
     if (!editCommentText.trim()) return;
     try {
       let res = await axios.put(
-        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}/comments/${commentId}`,
+        `/user-api/articles/${articleId}/comments/${commentId}`,
         { comment: editCommentText },
         { withCredentials: true }
       );
@@ -74,7 +74,7 @@ function ArticleByID() {
     if (!window.confirm("Are you sure you want to delete your comment?")) return;
     try {
       let res = await axios.delete(
-        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}/comments/${commentId}`,
+        `/user-api/articles/${articleId}/comments/${commentId}`,
         { withCredentials: true }
       );
       setArticle(res.data.payload);
@@ -86,7 +86,7 @@ function ArticleByID() {
     if (!replyText.trim()) return;
     try {
       let res = await axios.post(
-        `https://blog-app-gkta.onrender.com/author-api/articles/${articleId}/comments/${commentId}/reply`,
+        `/author-api/articles/${articleId}/comments/${commentId}/reply`,
         { reply: replyText },
         { withCredentials: true }
       );
@@ -102,7 +102,7 @@ function ArticleByID() {
     if (!window.confirm(`Are you sure you want to ${actionText} this article?`)) return;
     try {
       await axios.patch(
-        `https://blog-app-gkta.onrender.com/author-api/articles/${articleId}/status`,
+        `/author-api/articles/${articleId}/status`,
         { isArticleActive: !article.isArticleActive },
         { withCredentials: true }
       );

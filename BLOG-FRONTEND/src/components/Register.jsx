@@ -56,7 +56,7 @@ function Register() {
 
       if (role === "user") {
         let resObj = await axios.post(
-          "https://blog-app-gkta.onrender.com/user-api/users",
+          "/user-api/users",
           formData
         );
 
@@ -67,7 +67,7 @@ function Register() {
 
       if (role === "author") {
         let resObj = await axios.post(
-          "https://blog-app-gkta.onrender.com/author-api/users",
+          "/author-api/users",
           formData
         );
 

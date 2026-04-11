@@ -36,7 +36,7 @@ function WriteArticle() {
     articleObj.author = currentUser?._id || currentUser?.userId;
     try {
       await axios.post(
-        "https://blog-app-gkta.onrender.com/author-api/articles",
+        "/author-api/articles",
         articleObj,
         { withCredentials: true }
       );
