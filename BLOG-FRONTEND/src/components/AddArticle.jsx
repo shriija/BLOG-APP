@@ -1,22 +1,22 @@
 import { useForm } from "react-hook-form";
 import { pageWrapper, formCard, formTitle, inputClass, submitBtn } from "../styles/common"
 
-function AddArticle(){
+function AddArticle() {
 
-  const {register,handleSubmit,formState:{errors}}=useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const onSubmit=(data)=>{
+  const onSubmit = (data) => {
     console.log(data)
   }
 
-  return(
+  return (
     <div className={pageWrapper}>
 
       <form onSubmit={handleSubmit(onSubmit)} className={formCard}>
 
         <h2 className={formTitle}>Add Article</h2>
 
-        <input type="text" placeholder="Title" {...register("title",{required:true})} className={inputClass}/>
+        <input type="text" placeholder="Title" {...register("title", { required: true })} className={inputClass} />
 
         <select {...register("category")} className="border w-full p-2">
           <option value="">Select Category</option>
@@ -25,7 +25,7 @@ function AddArticle(){
           <option value="health">Health</option>
         </select>
 
-        <textarea placeholder="Content" {...register("content",{required:true})} className="border w-full p-2"  />
+        <textarea placeholder="Content" {...register("content", { required: true })} className="border w-full p-2" />
 
         <button className={submitBtn}> Publish Article  </button>
 

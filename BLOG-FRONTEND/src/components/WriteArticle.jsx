@@ -20,7 +20,7 @@ import { useAuth } from "../store/authStore";
 function WriteArticle() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const currentUser=useAuth(state=>state.currentUser)
+  const currentUser = useAuth(state => state.currentUser)
 
   const {
     register,
@@ -36,7 +36,7 @@ function WriteArticle() {
     articleObj.author = currentUser?._id || currentUser?.userId;
     try {
       await axios.post(
-        "http://localhost:4000/author-api/articles",
+        "https://blog-app-gkta.onrender.com/author-api/articles",
         articleObj,
         { withCredentials: true }
       );
@@ -56,93 +56,93 @@ function WriteArticle() {
 
   return (
     <div className="mt-7">
-    <div className={formCard}>
+      <div className={formCard}>
 
-      {/* Back Button */}
-      <button onClick={() => navigate(-1)} className={ghostBtn + " flex items-center gap-1.5 mb-6 w-fit !px-0 hover:-translate-x-1 transition-transform"}>
-        <span>←</span> Back
-      </button>
-
-      <h2 className={formTitle}>Write New Article</h2>
-
-      <form onSubmit={handleSubmit(submitArticle)}>
-
-        {/* Title */}
-        <div className={formGroup}>
-          <label className={labelClass}>Title</label>
-
-          <input
-            type="text"
-            className={inputClass}
-            placeholder="Enter article title"
-            {...register("title", {
-              required: "Title is required",
-              minLength: {
-                value: 5,
-                message: "Title must be at least 5 characters",
-              },
-            })}
-          />
-
-          {errors.title && (
-            <p className={errorClass}>{errors.title.message}</p>
-          )}
-        </div>
-
-        {/* Category */}
-        <div className={formGroup}>
-          <label className={labelClass}>Category</label>
-
-          <select
-            className={inputClass}
-            {...register("category", {
-              required: "Category is required",
-            })}
-          >
-            <option value="">Select category</option>
-            <option value="technology">Technology</option>
-            <option value="programming">Programming</option>
-            <option value="ai">AI</option>
-            <option value="web-development">Web Development</option>
-          </select>
-
-          {errors.category && (
-            <p className={errorClass}>{errors.category.message}</p>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className={formGroup}>
-          <label className={labelClass}>Content</label>
-
-          <textarea
-            rows="8"
-            className={inputClass}
-            placeholder="Write your article content..."
-            {...register("content", {
-              required: "Content is required",
-              minLength: {
-                value: 50,
-                message: "Content must be at least 50 characters",
-              },
-            })}
-          />
-
-          {errors.content && (
-            <p className={errorClass}>{errors.content.message}</p>
-          )}
-        </div>
-
-        {/* Submit */}
-        <button className={submitBtn} type="submit" disabled={loading}>
-          {loading ? "Publishing..." : "Publish Article"}
+        {/* Back Button */}
+        <button onClick={() => navigate(-1)} className={ghostBtn + " flex items-center gap-1.5 mb-6 w-fit !px-0 hover:-translate-x-1 transition-transform"}>
+          <span>←</span> Back
         </button>
 
-        {loading && (
-          <p className={loadingClass}>Publishing article...</p>
-        )}
-      </form>
-    </div>
+        <h2 className={formTitle}>Write New Article</h2>
+
+        <form onSubmit={handleSubmit(submitArticle)}>
+
+          {/* Title */}
+          <div className={formGroup}>
+            <label className={labelClass}>Title</label>
+
+            <input
+              type="text"
+              className={inputClass}
+              placeholder="Enter article title"
+              {...register("title", {
+                required: "Title is required",
+                minLength: {
+                  value: 5,
+                  message: "Title must be at least 5 characters",
+                },
+              })}
+            />
+
+            {errors.title && (
+              <p className={errorClass}>{errors.title.message}</p>
+            )}
+          </div>
+
+          {/* Category */}
+          <div className={formGroup}>
+            <label className={labelClass}>Category</label>
+
+            <select
+              className={inputClass}
+              {...register("category", {
+                required: "Category is required",
+              })}
+            >
+              <option value="">Select category</option>
+              <option value="technology">Technology</option>
+              <option value="programming">Programming</option>
+              <option value="ai">AI</option>
+              <option value="web-development">Web Development</option>
+            </select>
+
+            {errors.category && (
+              <p className={errorClass}>{errors.category.message}</p>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className={formGroup}>
+            <label className={labelClass}>Content</label>
+
+            <textarea
+              rows="8"
+              className={inputClass}
+              placeholder="Write your article content..."
+              {...register("content", {
+                required: "Content is required",
+                minLength: {
+                  value: 50,
+                  message: "Content must be at least 50 characters",
+                },
+              })}
+            />
+
+            {errors.content && (
+              <p className={errorClass}>{errors.content.message}</p>
+            )}
+          </div>
+
+          {/* Submit */}
+          <button className={submitBtn} type="submit" disabled={loading}>
+            {loading ? "Publishing..." : "Publish Article"}
+          </button>
+
+          {loading && (
+            <p className={loadingClass}>Publishing article...</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

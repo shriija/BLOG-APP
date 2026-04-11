@@ -21,7 +21,7 @@ function EditArticle() {
   const navigate = useNavigate();
   const { id } = useParams();
   const article = location.state;
-  const [articleData,setArticleData] = useState(article || null)
+  const [articleData, setArticleData] = useState(article || null)
   const currentUser = useAuth(state => state.currentUser)
 
   const {
@@ -43,31 +43,31 @@ function EditArticle() {
   const updateArticle = async (data) => {
     try {
 
-    await axios.put(
-      `http://localhost:4000/author-api/articles`,
-      { ...data, articleId: id, author: currentUser?.userId || currentUser?._id },
-      { withCredentials:true }
-    )
+      await axios.put(
+        `https://blog-app-gkta.onrender.com/author-api/articles`,
+        { ...data, articleId: id, author: currentUser?.userId || currentUser?._id },
+        { withCredentials: true }
+      )
 
-    toast.success("Article updated successfully")
+      toast.success("Article updated successfully")
 
-    navigate("/authordashboard")
+      navigate("/authordashboard")
 
-  } catch(err){
-    toast.error(err.response?.data?.error || "Update failed")
-  }
+    } catch (err) {
+      toast.error(err.response?.data?.error || "Update failed")
+    }
   };
 
-  const getArticleById = async ()=>{
-  try{
-    let res = await axios.get(
-      `http://localhost:4000/author-api/article/${id}`
-    )
-    setArticleData(res.data.payload)
-  }catch(err){
-    console.log(err)
+  const getArticleById = async () => {
+    try {
+      let res = await axios.get(
+        `https://blog-app-gkta.onrender.com/author-api/article/${id}`
+      )
+      setArticleData(res.data.payload)
+    } catch (err) {
+      console.log(err)
+    }
   }
-}
 
   return (
     <div className={`${formCard} mt-10`}>

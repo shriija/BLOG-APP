@@ -13,35 +13,35 @@ function Header() {
   }
 
   return (
-     <div className={navbarClass}>
-        <div className={navContainerClass}>
+    <div className={navbarClass}>
+      <div className={navContainerClass}>
         <NavLink to="/">
           <img width="80px" className="p-2 cursor-pointer hover:opacity-80 transition-opacity" src="https://static.vecteezy.com/system/resources/previews/000/626/702/original/education-book-logo-template-vector-illustration.jpg" alt="Home" />
         </NavLink>
 
         <ul className={navLinksClass}>
+          <li>
+            <NavLink to="/" className={({ isActive }) => isActive ? navLinkActiveClass : navLinkClass} >Home</NavLink>
+          </li>
+
+          {!currentUser ? (
+            <>
+              <li>
+                <NavLink to="/register" className={({ isActive }) => isActive ? navLinkActiveClass : navLinkClass}>Register</NavLink>
+              </li>
+              <li>
+                <NavLink to="/login" className={({ isActive }) => isActive ? navLinkActiveClass : navLinkClass}>Login</NavLink>
+              </li>
+            </>
+          ) : (
             <li>
-                <NavLink to="/" className={({isActive})=>isActive?navLinkActiveClass:navLinkClass} >Home</NavLink>
+              <NavLink to={getDashboardRoute()} className={({ isActive }) => isActive ? navLinkActiveClass : navLinkClass}>
+                Dashboard
+              </NavLink>
             </li>
-            
-            {!currentUser ? (
-              <>
-                <li>
-                    <NavLink to="/register" className={({isActive})=>isActive?navLinkActiveClass:navLinkClass}>Register</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/login" className={({isActive})=>isActive?navLinkActiveClass:navLinkClass}>Login</NavLink>
-                </li>
-              </>
-            ) : (
-                <li>
-                    <NavLink to={getDashboardRoute()} className={({isActive})=>isActive?navLinkActiveClass:navLinkClass}>
-                      Dashboard
-                    </NavLink>
-                </li>
-            )}
+          )}
         </ul>
-        </div>
+      </div>
     </div>
   )
 }

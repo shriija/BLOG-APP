@@ -14,7 +14,7 @@ function ArticleByID() {
   const user = useAuth((state) => state.currentUser);
 
   const [article, setArticle] = useState(location.state || null)
-  
+
   // State for Add New Comment
   const [commentText, setCommentText] = useState("");
 
@@ -29,7 +29,7 @@ function ArticleByID() {
   const getArticleById = async () => {
     try {
       let res = await axios.get(
-        `http://localhost:4000/common-api/article/${articleId}`,
+        `https://blog-app-gkta.onrender.com/common-api/article/${articleId}`,
         { withCredentials: true }
       )
       setArticle(res.data.payload)
@@ -44,7 +44,7 @@ function ArticleByID() {
 
     try {
       let res = await axios.post(
-        `http://localhost:4000/user-api/articles/${articleId}`,
+        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}`,
         { user: user?.userId || user?._id, articleId, comment: commentText },
         { withCredentials: true }
       );
@@ -60,7 +60,7 @@ function ArticleByID() {
     if (!editCommentText.trim()) return;
     try {
       let res = await axios.put(
-        `http://localhost:4000/user-api/articles/${articleId}/comments/${commentId}`,
+        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}/comments/${commentId}`,
         { comment: editCommentText },
         { withCredentials: true }
       );
@@ -74,7 +74,7 @@ function ArticleByID() {
     if (!window.confirm("Are you sure you want to delete your comment?")) return;
     try {
       let res = await axios.delete(
-        `http://localhost:4000/user-api/articles/${articleId}/comments/${commentId}`,
+        `https://blog-app-gkta.onrender.com/user-api/articles/${articleId}/comments/${commentId}`,
         { withCredentials: true }
       );
       setArticle(res.data.payload);
@@ -86,7 +86,7 @@ function ArticleByID() {
     if (!replyText.trim()) return;
     try {
       let res = await axios.post(
-        `http://localhost:4000/author-api/articles/${articleId}/comments/${commentId}/reply`,
+        `https://blog-app-gkta.onrender.com/author-api/articles/${articleId}/comments/${commentId}/reply`,
         { reply: replyText },
         { withCredentials: true }
       );
@@ -102,11 +102,11 @@ function ArticleByID() {
     if (!window.confirm(`Are you sure you want to ${actionText} this article?`)) return;
     try {
       await axios.patch(
-        `http://localhost:4000/author-api/articles/${articleId}/status`,
+        `https://blog-app-gkta.onrender.com/author-api/articles/${articleId}/status`,
         { isArticleActive: !article.isArticleActive },
         { withCredentials: true }
       );
-      setArticle({...article, isArticleActive: !article.isArticleActive});
+      setArticle({ ...article, isArticleActive: !article.isArticleActive });
       toast.success(`Article ${article.isArticleActive ? "deleted" : "restored"} successfully`);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update status");
@@ -153,13 +153,13 @@ function ArticleByID() {
             </span>
           </div>
           <div className="flex gap-4">
-            <button 
+            <button
               className={secondaryBtn}
               onClick={() => navigate(`/edit-article/${article._id}`, { state: article })}
             >
               Edit Article
             </button>
-            <button 
+            <button
               className={secondaryBtn + (article.isArticleActive ? " !text-red-600 !border-red-200 hover:!bg-red-50" : " !text-green-600 !border-green-200 hover:!bg-green-50")}
               onClick={toggleArticleStatus}
             >
@@ -186,87 +186,88 @@ function ArticleByID() {
             const isReplying = replyCommentId === comment._id;
 
             return (
-            <div key={index} className="bg-[#f5f5f7] rounded-2xl p-6 mb-5 border border-transparent hover:border-[#ebebf0] transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <p className="font-semibold text-[#1d1d1f]">
-                  {comment.user?.firstName || "Unknown"}
-                </p>
-                <p className="text-xs text-[#a1a1a6]">
-                  {comment.createdAt ? new Date(comment.createdAt).toLocaleString("en-IN", {
-                    timeZone: "Asia/Kolkata",
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  }) : "Just now"}
-                </p>
-              </div>
-
-              {/* Edit Mode vs Display Mode */}
-              {isEditing ? (
-                 <div className="mt-2">
-                   <textarea 
-                     className={inputClass} 
-                     rows="2" 
-                     value={editCommentText} 
-                     onChange={(e)=>setEditCommentText(e.target.value)}
-                   ></textarea>
-                   <div className="flex gap-3 mt-3">
-                     <button className={primaryBtn + " !py-1.5 !px-5 text-xs"} onClick={() => onEditComment(comment._id)}>Save Changes</button>
-                     <button className={ghostBtn + " !text-xs"} onClick={() => setEditCommentId(null)}>Cancel</button>
-                   </div>
-                 </div>
-              ) : (
-                 <>
-                   <p className="text-[#1d1d1f] text-sm whitespace-pre-wrap">{comment.comment}</p>
-                   
-                   {/* Comment Actions */}
-                   <div className="flex gap-4 mt-3">
-                     {isMyComment && (
-                       <>
-                         <button className={ghostBtn + " !text-[0.75rem] font-semibold"} onClick={() => { setEditCommentId(comment._id); setEditCommentText(comment.comment); }}>Edit</button>
-                         <button className={ghostBtn + " !text-[0.75rem] font-semibold !text-red-500 hover:!text-red-700"} onClick={() => onDeleteComment(comment._id)}>Delete</button>
-                       </>
-                     )}
-                     {isAuthor && !comment.authorReply && (
-                         <button className={ghostBtn + " !text-[0.75rem] font-semibold"} onClick={() => setReplyCommentId(comment._id)}>Reply</button>
-                     )}
-                   </div>
-                 </>
-              )}
-
-              {/* Author Reply Box */}
-              {comment.authorReply && (
-                <div className="mt-5 p-4 bg-white border border-[#e8e8ed] rounded-xl ml-4 shadow-sm">
-                   <p className="text-[0.7rem] font-bold text-[#0066cc] uppercase tracking-widest mb-1.5 flex items-center gap-2">
-                     <span className="w-1 h-1 bg-[#0066cc] rounded-full"></span> Author Response
-                   </p>
-                   <p className="text-sm text-[#1d1d1f] whitespace-pre-wrap leading-relaxed">{comment.authorReply}</p>
+              <div key={index} className="bg-[#f5f5f7] rounded-2xl p-6 mb-5 border border-transparent hover:border-[#ebebf0] transition-all">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="font-semibold text-[#1d1d1f]">
+                    {comment.user?.firstName || "Unknown"}
+                  </p>
+                  <p className="text-xs text-[#a1a1a6]">
+                    {comment.createdAt ? new Date(comment.createdAt).toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    }) : "Just now"}
+                  </p>
                 </div>
-              )}
 
-              {/* Dynamic Reply Input */}
-              {isReplying && (
-                 <div className="mt-5 ml-4 p-4 bg-white border border-[#e8e8ed] rounded-xl">
-                   <h4 className="text-xs font-semibold text-[#1d1d1f] mb-2">Write Official Response</h4>
-                   <textarea 
-                     className={inputClass} 
-                     rows="2" 
-                     placeholder="Type your response to the user..." 
-                     value={replyText} 
-                     onChange={(e)=>setReplyText(e.target.value)}
-                   ></textarea>
-                   <div className="flex gap-3 mt-3">
-                     <button className={primaryBtn + " !py-1.5 !px-5 text-xs"} onClick={() => onReplyToComment(comment._id)}>Post Reply</button>
-                     <button className={ghostBtn + " text-xs"} onClick={() => { setReplyCommentId(null); setReplyText(""); }}>Cancel</button>
-                   </div>
-                 </div>
-              )}
+                {/* Edit Mode vs Display Mode */}
+                {isEditing ? (
+                  <div className="mt-2">
+                    <textarea
+                      className={inputClass}
+                      rows="2"
+                      value={editCommentText}
+                      onChange={(e) => setEditCommentText(e.target.value)}
+                    ></textarea>
+                    <div className="flex gap-3 mt-3">
+                      <button className={primaryBtn + " !py-1.5 !px-5 text-xs"} onClick={() => onEditComment(comment._id)}>Save Changes</button>
+                      <button className={ghostBtn + " !text-xs"} onClick={() => setEditCommentId(null)}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-[#1d1d1f] text-sm whitespace-pre-wrap">{comment.comment}</p>
 
-            </div>
-          )})
+                    {/* Comment Actions */}
+                    <div className="flex gap-4 mt-3">
+                      {isMyComment && (
+                        <>
+                          <button className={ghostBtn + " !text-[0.75rem] font-semibold"} onClick={() => { setEditCommentId(comment._id); setEditCommentText(comment.comment); }}>Edit</button>
+                          <button className={ghostBtn + " !text-[0.75rem] font-semibold !text-red-500 hover:!text-red-700"} onClick={() => onDeleteComment(comment._id)}>Delete</button>
+                        </>
+                      )}
+                      {isAuthor && !comment.authorReply && (
+                        <button className={ghostBtn + " !text-[0.75rem] font-semibold"} onClick={() => setReplyCommentId(comment._id)}>Reply</button>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {/* Author Reply Box */}
+                {comment.authorReply && (
+                  <div className="mt-5 p-4 bg-white border border-[#e8e8ed] rounded-xl ml-4 shadow-sm">
+                    <p className="text-[0.7rem] font-bold text-[#0066cc] uppercase tracking-widest mb-1.5 flex items-center gap-2">
+                      <span className="w-1 h-1 bg-[#0066cc] rounded-full"></span> Author Response
+                    </p>
+                    <p className="text-sm text-[#1d1d1f] whitespace-pre-wrap leading-relaxed">{comment.authorReply}</p>
+                  </div>
+                )}
+
+                {/* Dynamic Reply Input */}
+                {isReplying && (
+                  <div className="mt-5 ml-4 p-4 bg-white border border-[#e8e8ed] rounded-xl">
+                    <h4 className="text-xs font-semibold text-[#1d1d1f] mb-2">Write Official Response</h4>
+                    <textarea
+                      className={inputClass}
+                      rows="2"
+                      placeholder="Type your response to the user..."
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                    ></textarea>
+                    <div className="flex gap-3 mt-3">
+                      <button className={primaryBtn + " !py-1.5 !px-5 text-xs"} onClick={() => onReplyToComment(comment._id)}>Post Reply</button>
+                      <button className={ghostBtn + " text-xs"} onClick={() => { setReplyCommentId(null); setReplyText(""); }}>Cancel</button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            )
+          })
         ) : (
-           <p className={mutedText}>
-             {user?.role === "USER" ? "No comments yet. Be the first to share your thoughts!" : "No comments yet."}
-           </p>
+          <p className={mutedText}>
+            {user?.role === "USER" ? "No comments yet. Be the first to share your thoughts!" : "No comments yet."}
+          </p>
         )}
       </div>
 
@@ -275,8 +276,8 @@ function ArticleByID() {
         <div className="mt-10">
           <h3 className={headingClass + " mb-4"}>Add a Comment</h3>
           <form onSubmit={onAddComment}>
-            <textarea 
-              className={inputClass} 
+            <textarea
+              className={inputClass}
               rows="3"
               placeholder="Share your thoughts..."
               value={commentText}

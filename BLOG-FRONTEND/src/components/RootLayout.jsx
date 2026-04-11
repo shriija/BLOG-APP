@@ -6,26 +6,26 @@ import { useEffect } from "react";
 
 function RootLayout() {
 
-  const checkAuth=useAuth((state)=>state.checkAuth);
-  const loading=useAuth((state)=>state.loading);
+  const checkAuth = useAuth((state) => state.checkAuth);
+  const loading = useAuth((state) => state.loading);
 
-  useEffect(()=>{
+  useEffect(() => {
     checkAuth();
-  },[checkAuth]);
+  }, [checkAuth]);
 
   //wait until auth check completes
-  if(loading) {
+  if (loading) {
     return <p className="text-center mt-10">Loading...</p>
   }
 
 
   return (
     <div className="flex flex-col min-h-screen">
-        <Header/>
-        <div className="mx-20 flex-grow">
-            <Outlet/>
-        </div>
-        <Footer/>
+      <Header />
+      <div className="mx-20 flex-grow">
+        <Outlet />
+      </div>
+      <Footer />
     </div>
   )
 }
