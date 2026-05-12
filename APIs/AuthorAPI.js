@@ -106,15 +106,16 @@ authorRoute.put(
   }
 );
 
-//delete (soft delete) article (protected route)
-authorRoute.put('/articles/:articleId/delete', verifyToken, checkAuthor, async (req, res) => {
+//update article status (soft delete / restore)
+authorRoute.patch('/articles/:articleId/status', verifyToken, checkAuthor, async (req, res) => {
    try {
      let { articleId } = req.params 
-     let deletedArticle = await ArticleModel.findOneAndUpdate( { _id: articleId, author: req.authorId },
-       { $set: { isArticleActive: false } }, { new: true } ) 
-       if (!deletedArticle) {
+     let { isArticleActive } = req.body
+     let updatedArticle = await ArticleModel.findOneAndUpdate( { _id: articleId, author: req.authorId },
+       { $set: { isArticleActive } }, { new: true } ) 
+       if (!updatedArticle) {
          return res.status(404).json({ message: "article NOT found or not authorized" }) } 
-         res.status(200).json({ message: "article deleted (soft delete)", payload: deletedArticle }) } 
+         res.status(200).json({ message: "article status updated", payload: updatedArticle }) } 
          catch (error) { res.status(500).json({ message: error.message }) }})
 //http://localhost:4000/user-api/users
 //http://localhost:4000/author-api/users

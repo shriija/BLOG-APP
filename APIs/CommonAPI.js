@@ -22,9 +22,27 @@ commonRouter.post("/login",async(req, res)=>{
       //send response
       res.status(200).json({
         message: "login success",
+        token: token,
         payload: user,
       });
     });
+
+import { verifyToken } from "../middlewares/verifyToken.js";
+
+//check auth
+commonRouter.get("/check-auth", verifyToken, async (req, res) => {
+  try {
+    const user = await UserTypeModel.findById(req.user.userId);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    const userObj = user.toObject();
+    delete userObj.password;
+    res.status(200).json({ message: "Authenticated", payload: userObj });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 //logout
 commonRouter.get("/logout",async(req, res)=>{

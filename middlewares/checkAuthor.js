@@ -27,5 +27,6 @@ export const checkAuthor = async (req, res, next) => {
   }
 
   //if all checks pass, forward request to next middleware/controller
+  req.authorId = authorId;
   next();
 };
