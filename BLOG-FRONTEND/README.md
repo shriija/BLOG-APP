@@ -1,16 +1,109 @@
-# React + Vite
+# 🌐 BlogApp Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for the BlogApp MERN platform built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Frontend Features
 
-## React Compiler
+- Modern Glassmorphic UI
+- Fully Responsive Layout
+- JWT Authentication Integration
+- Protected Routes
+- Zustand Global State Management
+- Toast Notifications
+- React Hook Form Validation
+- Dynamic Routing
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Frontend Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Technology | Purpose |
+|---|---|
+| React 19 | UI Development |
+| Vite | Fast Build Tool |
+| Tailwind CSS | Styling |
+| Zustand | State Management |
+| Axios | API Communication |
+| React Router | Navigation |
+| React Hook Form | Forms & Validation |
+| React Hot Toast | Notifications |
+
+---
+
+## 📁 Frontend Structure
+
+```bash
+BLOG-FRONTEND/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── routes/
+│   ├── store/
+│   ├── styles/
+│   └── assets/
+│
+├── public/
+├── vite.config.js
+├── package.json
+└── index.html
+```
+
+---
+
+## ⚙️ Frontend Environment Variables
+
+```env
+VITE_API_URL=http://localhost:10000
+```
+
+---
+
+## 🏃 Run Frontend Locally
+
+```bash
+cd BLOG-FRONTEND
+
+npm install
+
+npm run dev
+```
+
+---
+
+## 📱 Responsive Design
+
+Optimized for:
+
+- Mobile Devices
+- Tablets
+- Laptops
+- Desktop Screens
+
+### Responsive Features
+
+- Hamburger Navigation
+- Adaptive Typography
+- Responsive Grid Layouts
+- Flexible Containers
+- Touch-Friendly Components
+
+---
+
+## 🧠 State Management
+
+The frontend uses Zustand for:
+
+- Authentication State
+- User Session Persistence
+- Shared Global State
+
+---
+
+## 🚀 Frontend Deployment
+
+- Platform: Vercel
+- Production Build: Vite
+- Auto Deployment from GitHub
