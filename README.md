@@ -11,7 +11,7 @@ The application enables users to explore articles, authors to publish content, a
 | Service | Status | Link |
 |---|---|---|
 | Frontend | 🟢 Live | https://blog-app-gules-eight.vercel.app |
-| Backend | 🟢 Live | [https://blog-app-gules-eight.vercel.app](https://blog-app-gkta.onrender.com) |
+| Backend | 🟢 Live | [https://blog-app-gkta.onrender.com](https://blog-app-gkta.onrender.com) |
 
 ---
 
